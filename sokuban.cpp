@@ -7,11 +7,12 @@
 
 int main()
 {
+    
     std::vector<std::string> control_map[100]; 
     int player_x,player_y;
     std::fstream map;// this will be the new map for watching the whole thing 
     map.open("map.txt");
-    if(map.fail()) std::cout << "the map has failed to open\n";
+    if(map.fail()) std::cout << "the map has failed to open\nThis error is normal if you are on your first try\n";
     std::ofstream outfile;
     outfile.open("map.txt");// clears out the map.txt 
     int height,width;
