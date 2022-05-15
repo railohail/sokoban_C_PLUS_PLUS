@@ -65,6 +65,7 @@ int main()
                 std::cout << "You win!!!\n";
                 Sleep(3000);
                 system("pause");
+                return 0;
             }
             
         
