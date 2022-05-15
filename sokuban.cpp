@@ -63,6 +63,7 @@ int main()
             {
                 system("cls");
                 std::cout << "You win!!!\n";
+                Sleep(3000);
                 system("pause");
             }
             
