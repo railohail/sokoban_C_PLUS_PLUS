@@ -73,4 +73,5 @@ int main()
     }
     Sleep(3000);
     sokuban_test.end(&target);
+    system("pause");
 }
