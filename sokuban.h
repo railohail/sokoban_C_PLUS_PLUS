@@ -102,7 +102,6 @@ void sokuban::print(std::string *target,int height, int width)
 void sokuban::end(std::string *target)
 {
     std::cout << "deleting aditional cache\n";
-    Sleep(1000);
     system("cls");
     std::ofstream outfile;
     outfile.open(*target);
@@ -264,15 +263,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y-1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y-2][*player_x] == "0";
+                control_map[*player_y-1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y-2][*player_x] = "1";
             }
             else
             {
-                control_map[*player_y-1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y-2][*player_x] == "0";
+                control_map[*player_y-1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y-2][*player_x] = "1";// 1 is box 
 
             }
             *player_y -= 1;
@@ -282,15 +281,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y-1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y-2][*player_x] == "3";
+                control_map[*player_y-1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y-2][*player_x] = "3";
             }
             else
             {
-                control_map[*player_y-1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y-2][*player_x] == "3";
+                control_map[*player_y-1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y-2][*player_x] = "3";
             }
             *player_y -= 1;
         }
@@ -373,15 +372,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y+1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y+2][*player_x] == "0";
+                control_map[*player_y+1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y+2][*player_x] = "1";
             }
             else
             {
-                control_map[*player_y-1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y+2][*player_x] == "0";
+                control_map[*player_y-1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y+2][*player_x] = "1";
 
             }
             *player_y += 1;
@@ -391,15 +390,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y+1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y+2][*player_x] == "3";
+                control_map[*player_y+1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y+2][*player_x] = "3";
             }
             else
             {
-                control_map[*player_y+1][*player_x] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y+2][*player_x] == "3";
+                control_map[*player_y+1][*player_x] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y+2][*player_x] = "3";
             }
             *player_y += 1;
         }
@@ -481,15 +480,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y][*player_x-1] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y][*player_x-2] == "0";
+                control_map[*player_y][*player_x-1] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y][*player_x-2] = "1";
             }
             else
             {
-                control_map[*player_y][*player_x-1] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y][*player_x-2] == "0";
+                control_map[*player_y][*player_x-1] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y][*player_x-2] = "1";
 
             }
             *player_x -= 1;
@@ -499,15 +498,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y][*player_x-1] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y][*player_x-2] == "3";
+                control_map[*player_y][*player_x-1] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y][*player_x-2] = "3";
             }
             else
             {
-                control_map[*player_y][*player_x-1] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y][*player_x-2] == "3";
+                control_map[*player_y][*player_x-1] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y][*player_x-2] = "3";
             }
             *player_x -= 1;
         }
@@ -597,15 +596,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y][*player_x+1] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y][*player_x+2] == "0";
+                control_map[*player_y][*player_x+1] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y][*player_x+2] = "1";
             }
             else
             {
-                control_map[*player_y][*player_x+1] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y][*player_x+2] == "0";
+                control_map[*player_y][*player_x+1] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y][*player_x+2] = "1";
 
             }
             *player_x += 1;
@@ -615,15 +614,15 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
             temp = control_map[*player_y][*player_x];
             if(temp != "4")
             {
-                control_map[*player_y][*player_x+1] == "4";
-                control_map[*player_y][*player_x] == "-";
-                control_map[*player_y][*player_x+2] == "3";
+                control_map[*player_y][*player_x+1] = "4";
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y][*player_x+2] = "3";
             }
             else
             {
-                control_map[*player_y][*player_x+1] == "4";
-                control_map[*player_y][*player_x] == "2";
-                control_map[*player_y][*player_x+2] == "3";
+                control_map[*player_y][*player_x+1] = "4";
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y][*player_x+2] = "3";
             }
             *player_x += 1;
             
