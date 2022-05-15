@@ -70,6 +70,6 @@ int main()
         
         }
     }
-    Sleep(5000);
+    Sleep(3000);
     sokuban_test.end(&target);
 }
