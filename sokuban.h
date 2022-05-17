@@ -169,9 +169,160 @@ void sokuban::controlmapgenerate(std::vector<std::string> (&control_map)[100],in
         line = "NULL";
     }
 }
+void movement(std::vector<std::string>(&control_map)[100],int *player_x,int *player_y,int x,int y)
+{
+    
+    
+    std::string temp,temp2;
+    int x_two = x*2;
+    int y_two = y*2;
+    if(control_map[*player_y+y][*player_x+x] == "-")
+    {
+        
+        temp = control_map[*player_y][*player_x];
+        if(temp != "4")//nleave the check point
+        {
+            control_map[*player_y][*player_x] = control_map[*player_y+y][*player_x+x];
+            control_map[*player_y+y][*player_x+x] = temp;
+        }
+        else//leave check
+        {
+            control_map[*player_y][*player_x] = "2";
+            control_map[*player_y+y][*player_x+x] = "0";
+        }
+        if(y > 0 || y < 0)
+        {
+            *player_y += y;
+        }
+        else if(x < 0|| x > 0)
+        {
+            *player_x += x;
+        }
+
+    }
+    else if(control_map[*player_y+y][*player_x+x] == "1" &&(control_map[*player_y+y_two][*player_x+x_two] == "-" || control_map[*player_y+y_two][*player_x+x_two] == "2"))
+    {
+        
+        temp = control_map[*player_y][*player_x];
+        temp2 = control_map[*player_y+y][*player_x+x];
+        //three scenarios
+        //1.with 2 out
+        //1.with 2 in
+        //1.without 2
+        if(control_map[*player_y+y_two][*player_x+x_two] == "2")// into end
+        {
+            control_map[*player_y+y_two][*player_x+x_two] = "3";
+            if(temp != "4")
+            {
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y+y][*player_x+x] = temp;
+            }
+            else 
+            {
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y+y][*player_x+x] = "0";
+            }
+            
+        }
+        else if(control_map[*player_y+y_two][*player_x+x_two] == "-")//into space
+        {
+            control_map[*player_y+y_two][*player_x+x_two] = "1";
+            if(temp != "4")
+            {
+                control_map[*player_y][*player_x] = "-";
+                control_map[*player_y+y][*player_x+x] = temp;
+            }
+            else 
+            {
+                control_map[*player_y][*player_x] = "2";
+                control_map[*player_y+y][*player_x+x] = "0";
+            }
+        }
+        
+        if(y > 0 || y < 0)
+        {
+            *player_y += y;
+        }
+        else if(x < 0|| x > 0)
+        {
+            *player_x += x;
+        }
+            
+    }
+    else if(control_map[*player_y+y][*player_x+x] == "2")// check point
+    {
+        temp = control_map[*player_y][*player_x];
+        if(temp != "4")
+        {
+            control_map[*player_y][*player_x] = "-";
+            control_map[*player_y+y][*player_x+x] = "4";
+        }
+        else
+        {
+            control_map[*player_y][*player_x] = "2";
+            control_map[*player_y+y][*player_x+x] = "4";
+        }
+        if(y > 0 || y < 0)
+        {
+            *player_y += y;
+        }
+        else if(x < 0|| x > 0)
+        {
+            *player_x += x;
+        }
+    }
+    else if(control_map[*player_y+y][*player_x+x] == "3" && control_map[*player_y+y_two][*player_x+x_two] == "-")//meet already done stuff
+    {
+        temp = control_map[*player_y][*player_x];
+        if(temp != "4")
+        {
+            control_map[*player_y+y][*player_x+x] = "4";
+            control_map[*player_y][*player_x] = "-";
+            control_map[*player_y+y_two][*player_x+x_two] = "1";
+        }
+        else
+        {
+            control_map[*player_y+y][*player_x+x] = "4";
+            control_map[*player_y][*player_x] = "2";
+            control_map[*player_y+y_two][*player_x+x_two] = "1";// 1 is box 
+
+        }
+        if(y > 0 || y < 0)
+        {
+            *player_y += y;
+        }
+        else if(x < 0|| x > 0)
+        {
+            *player_x += x;
+        }
+    }
+    else if(control_map[*player_y+y][*player_x+x] == "3" && control_map[*player_y+y_two][*player_x+x_two] == "2")//meet already done stuff
+    {
+        temp = control_map[*player_y][*player_x];
+        if(temp != "4")
+        {
+            control_map[*player_y+y][*player_x+x] = "4";
+            control_map[*player_y][*player_x] = "-";
+            control_map[*player_y+y_two][*player_x+x_two] = "3";
+        }
+        else
+        {
+            control_map[*player_y+y][*player_x+x] = "4";
+            control_map[*player_y][*player_x] = "2";
+            control_map[*player_y+y_two][*player_x+x_two] = "3";
+        }
+        if(y > 0 || y < 0)
+        {
+            *player_y += y;
+        }
+        else if(x < 0|| x > 0)
+        {
+            *player_x += x;
+        }
+    }
+}
 void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player_x,int *player_y,int height,int width,std::string input)
 {
-    std::cout << input << "\n";
    
     // std::cout << *player_x << " "<< *player_y << "\n";
     //  Sleep(1000);
@@ -185,449 +336,33 @@ void sokuban::moveornot(std::vector<std::string> (&control_map)[100],int *player
     //
     //BTW up is negative left is negative
     std::string temp,temp2;//1 is box 2 is check point 3 is checked box 4 is human in check point 
+    int x,y;
     if(input == "Up")
     { 
-        if(control_map[*(player_y)-1][*player_x] == "-")
-        {
-            
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")//nleave the check point
-            {
-                control_map[*player_y][*player_x] = control_map[*player_y -1][*player_x];
-                control_map[*player_y-1][*player_x] = temp;
-            }
-            else//leave check
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y-1][*player_x] = "0";
-            }
-            *player_y -= 1;
-        }
-        else if(control_map[*(player_y)-1][*player_x] == "1" &&(control_map[*player_y-2][*player_x] == "-" || control_map[*player_y-2][*player_x] == "2"))
-        {
-            temp = control_map[*player_y][*player_x];
-            temp2 = control_map[*player_y-1][*player_x];
-            //three scenarios
-            //1.with 2 out
-            //1.with 2 in
-            //1.without 2
-            if(control_map[*player_y-2][*player_x] == "2")// into end
-            {
-                control_map[*player_y-2][*player_x] = "3";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y-1][*player_x] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y-1][*player_x] = "0";
-                }
-                
-            }
-            else if(control_map[*player_y-2][*player_x] == "-")//into space
-            {
-                control_map[*player_y-2][*player_x] = "1";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y-1][*player_x] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y-1][*player_x] = "0";
-                }
-            }
-            
-            *player_y -= 1;    
-        }
-        else if(control_map[*player_y-1][*player_x] == "2")// check point
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y-1][*player_x] = "4";
-            }
-            else
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y-1][*player_x] = "4";
-            }
-            *player_y -= 1;
-        }
-        else if(control_map[*player_y-1][*player_x] == "3" && control_map[*player_y-2][*player_x] == "-")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y-1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y-2][*player_x] = "1";
-            }
-            else
-            {
-                control_map[*player_y-1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y-2][*player_x] = "1";// 1 is box 
-
-            }
-            *player_y -= 1;
-        }
-        else if(control_map[*player_y-1][*player_x] == "3" && control_map[*player_y-2][*player_x] == "2")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y-1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y-2][*player_x] = "3";
-            }
-            else
-            {
-                control_map[*player_y-1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y-2][*player_x] = "3";
-            }
-            *player_y -= 1;
-        }
+        x = 0;
+        y = -1;
+        movement(control_map,player_x,player_y,x,y);
         
     }
     else if(input == "Down")
     {
-        if(control_map[*player_y+1][*player_x] == "-")
-        {
-            
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")//nleave the check point
-            {
-                control_map[*player_y][*player_x] = control_map[*player_y+1][*player_x];
-                control_map[*player_y+1][*player_x] = temp;
-            }
-            else//leave check
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y+1][*player_x] = "0";
-            }
-            *player_y += 1;
-        }
-        else if(control_map[*player_y+1][*player_x] == "1" &&(control_map[*player_y+2][*player_x] == "-" || control_map[*player_y+2][*player_x] == "2"))
-        {
-            temp = control_map[*player_y][*player_x];
-            temp2 = control_map[*player_y+1][*player_x];
-            //three scenarios
-            //1.with 2 out
-            //1.with 2 in
-            //1.without 2
-            if(control_map[*player_y+2][*player_x] == "2")// into end
-            {
-                control_map[*player_y+2][*player_x] = "3";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y+1][*player_x] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y+1][*player_x] = "0";
-                }
-            }
-            else if(control_map[*player_y+2][*player_x] == "-")//into space
-            {
-                control_map[*player_y+2][*player_x] = "1";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y+1][*player_x] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y+1][*player_x] = "0";
-                }
-            }
-            *player_y += 1;
-                
-        }
-        else if(control_map[*player_y+1][*player_x] == "2")// check point
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y+1][*player_x] = "4";
-            }
-            else
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y+1][*player_x] = "4";
-            }
-            *player_y += 1;
-        }
-        else if(control_map[*player_y+1][*player_x] == "3" && control_map[*player_y+2][*player_x] == "-")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y+1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y+2][*player_x] = "1";
-            }
-            else
-            {
-                control_map[*player_y-1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y+2][*player_x] = "1";
-
-            }
-            *player_y += 1;
-        }
-        else if(control_map[*player_y+1][*player_x] == "3" && control_map[*player_y+2][*player_x] == "2")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y+1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y+2][*player_x] = "3";
-            }
-            else
-            {
-                control_map[*player_y+1][*player_x] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y+2][*player_x] = "3";
-            }
-            *player_y += 1;
-        }
+        x = 0;
+        y = +1;
+        movement(control_map,&*player_x,&*player_y,x,y);
     }
     else if(input == "Left")
     {
-        if(control_map[*player_y][*player_x-1] == "-")
-        {
-            
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")//nleave the check point
-            {
-                control_map[*player_y][*player_x] = control_map[*player_y][*player_x-1];
-                control_map[*player_y][*player_x-1] = temp;
-            }
-            else//leave check
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x-1] = "0";
-            }
-            *player_x -= 1; 
-        }
-        else if(control_map[*player_y][*player_x-1] == "1" && (control_map[*player_y][*player_x-2] == "-"|| control_map[*player_y][*player_x-2] == "2"))
-        {
-            temp = control_map[*player_y][*player_x];
-            temp2 = control_map[*player_y][*player_x-1];
-            //three scenarios
-            //1.with 2 out
-            //1.with 2 in
-            //1.without 2
-            if(control_map[*player_y][*player_x-2] == "2")// into end
-            {
-                control_map[*player_y][*player_x-2] = "3";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y][*player_x-1] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y][*player_x-1] = "0";
-                }
-            }
-            else if(control_map[*player_y][*player_x-2] == "-")//into space
-            {
-                control_map[*player_y][*player_x-2] = "1";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y][*player_x-1] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y][*player_x-1] = "0";
-                }
-            }
-            *player_x -= 1;
-                
-        }
-        else if(control_map[*player_y][*player_x-1] == "2")// check point
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x-1] = "4";
-            }
-            else
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x-1] = "4";
-            }
-            *player_x -= 1;
-        }
-        else if(control_map[*player_y][*player_x-1] == "3" && control_map[*player_y][*player_x-2] == "-")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x-1] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x-2] = "1";
-            }
-            else
-            {
-                control_map[*player_y][*player_x-1] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x-2] = "1";
-
-            }
-            *player_x -= 1;
-        }
-        else if(control_map[*player_y][*player_x-1] == "3" && control_map[*player_y][*player_x-2] == "2")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x-1] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x-2] = "3";
-            }
-            else
-            {
-                control_map[*player_y][*player_x-1] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x-2] = "3";
-            }
-            *player_x -= 1;
-        }
+        x = -1;
+        y = 0;
+        movement(control_map,player_x,player_y,x,y);
     }
     else if(input == "Right")
     {
-        // for(int i = 0; i < 3;i++)
-        //     std::cout << "ist " << control_map[*(player_y)][*(player_x)+i]<<" \n";
-        
-        // Sleep(1000);
-        if(control_map[*player_y][*player_x+1] == "-")
-        {
-            
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")//nleave the check point
-            {
-                control_map[*player_y][*player_x] = control_map[*player_y ][*player_x+1];
-                control_map[*player_y][*player_x+1] = temp;
-            }
-            else//leave check
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x+1] = "0";
-                
-            }
-            *player_x += 1;
-            
-        }
-        else if(control_map[*(player_y)][*player_x+1] == "1" && (control_map[*player_y][*player_x+2] == "-" || control_map[*player_y][*player_x+2] == "2"))
-        {
-            
-            temp = control_map[*player_y][*player_x];
-            temp2 = control_map[*player_y][*player_x+1];
-            //three scenarios
-            //1.with 2 out
-            //1.with 2 in
-            //1.without 2
-            if(control_map[*player_y][*player_x+1] == "2")// into end
-            {
-                control_map[*player_y][*player_x+2] = "3";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y][*player_x+1] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y][*player_x+1] = "0";
-                }
-                *player_x += 1;
-
-            }
-            else if(control_map[*player_y][*player_x+2] == "-")//into space
-            {
-                control_map[*player_y][*player_x+2] = "1";
-                if(temp != "4")
-                {
-                    control_map[*player_y][*player_x] = "-";
-                    control_map[*player_y][*player_x+1] = temp;
-                }
-                else 
-                {
-                    control_map[*player_y][*player_x] = "2";
-                    control_map[*player_y][*player_x+1] = "0";
-                }
-            }
-            *player_x += 1;
-        }
-        else if(control_map[*player_y][*player_x+1] == "2")// check point
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x+1] = "4";
-            }
-            else
-            {
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x+1]= "4";
-            }
-            *player_x += 1;
-        }
-        else if(control_map[*player_y][*player_x+1] == "3" && control_map[*player_y][*player_x+2] == "-")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x+1] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x+2] = "1";
-            }
-            else
-            {
-                control_map[*player_y][*player_x+1] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x+2] = "1";
-
-            }
-            *player_x += 1;
-        }
-        else if(control_map[*player_y][*player_x+1] == "3" && control_map[*player_y][*player_x+2] == "2")//meet already done stuff
-        {
-            temp = control_map[*player_y][*player_x];
-            if(temp != "4")
-            {
-                control_map[*player_y][*player_x+1] = "4";
-                control_map[*player_y][*player_x] = "-";
-                control_map[*player_y][*player_x+2] = "3";
-            }
-            else
-            {
-                control_map[*player_y][*player_x+1] = "4";
-                control_map[*player_y][*player_x] = "2";
-                control_map[*player_y][*player_x+2] = "3";
-            }
-            *player_x += 1;
-            
-        }
+        x = +1;
+        y = 0;
+        movement(control_map,player_x,player_y,x,y);
     }
+    
 }
 void sokuban::showcurrent(std::vector<std::string> (&control_map)[100],int height,int width)
 {
@@ -660,4 +395,4 @@ int sokuban::did_you_win(std::vector<std::string> (&control_map)[100],int height
 }
 
 
-//new stuff i guess
+//new stuff
